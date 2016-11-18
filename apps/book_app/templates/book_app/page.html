@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Book Page</title>
+    </head>
+    <body>
+        <div id = "wrapper">
+            <div id = "reveiws">
+                <a href="/books">Home</a>
+                <a href="/logout">Logout</a>
+                <h2>{{book.title}}</h2>
+                <p>Author: {{book.author}}</p>
+                <h2>Reviews:</h2>
+                {% for review in reviews %}
+                    {% for i in n %}
+                        {% if i < review.rating %}
+                            <img src="{% static 'book_app/images/starup.png' %}" alt="Good Star" height = '20px' width = 'auto' />
+                        {% else %}
+                            <img src="{% static 'book_app/images/stardown.png' %}" alt="Bad Star" height = '20px' width = 'auto' />
+                        {% endif %}
+                    {% endfor %}
+                    <a href="/users/{{review.user_id.id}}">{{review.user_id.alias}}</a> says: {{review.review}}
+                    {{review.created_at}}
+                    {% if review.user_id.id == request.session.user_id %}
+                        <a href="/delete/{{review.id}}">Delete this Review</a>
+                    {% endif %}
+                    <br>
+                {% endfor %}
+            </div>
+            <div id = "add_review">
+                <form class="" action="/add_review" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="author2" value="{{book.author}}">
+                    <input type="hidden" name="title" value="{{book.title}}">
+                    Review:<textarea name="review" rows="10" cols="50"></textarea>
+                    Rating:<input type="text" name="rating" value="">
+                    <input type="submit" name="subBtn" value="Add a Review">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

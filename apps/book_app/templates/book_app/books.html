@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{% static 'book_app/book_style.css' %}" type = "text/css">
+        <title>Home Page</title>
+    </head>
+    <body>
+        <div id = "wrapper">
+            <h1>Welcome, {{user.alias}}</h1>
+            <a href="/logout">Logout</a>
+            <a href="/books/add">Add Book and Review</a>
+            <div id = "recents">
+                <h3>Recent Book Reviews</h3>
+                {% for recent in recents %}
+                    <a href="/books/{{recent.book_id.id}}">{{recent.book_id.title}}</a>
+                    Rating: {% for i in n %}
+                        {% if i < recent.rating %}
+                            <img src="{% static 'book_app/images/starup.png' %}" alt="Good Star" height = '20px' width = 'auto' />
+                        {% else %}
+                            <img src="{% static 'book_app/images/stardown.png' %}" alt="Bad Star" height = '20px' width = 'auto' />
+                        {% endif %}
+                    {% endfor %}
+                    <a href="/users/{{recent.user_id.id}}"> {{recent.user_id.alias}}</a> says: {{recent.review}}
+                    {{recent.created_at}}<br>
+                {% endfor %}
+            </div>
+            <div id = "book_select">
+                {% for book in books %}
+                    <a href="/books/{{book.id}}">{{book.title}}</a><br>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>
